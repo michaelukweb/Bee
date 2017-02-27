@@ -4,87 +4,74 @@ Date: Feburary 2017
 Developer: Michael 
 */
 
+//Inform user which bee was hit and points lost 
+var beehit = document.getElementById("beehit").innerHTML = "";
+
 //Load function on page load 
 window.addEventListener('load', function() { 
-	
-	queenBee(); 
-	workerBee(); 
-	droneBee();
+
+	Bee(); 
 
 }, false);
 
-//Array to store bee default values 
-var bees = [100, 100, 100, 75, 75, 75, 75, 75, 50, 50, 50, 50, 50, 50, 50];
-
-
 //Show Queen Bees value to user 
-function queenBee () {
-	var count = 0;
-	var num = 1;
-	var queen_status = 1;
-	
-	for (let i = 0; i < 3; i++) {
+function Bee () {
+
+	var bees = getBees();
+
+	for (let i = 1; i < 4; i++) {
 
 		//Shows Bee's values 
-		document.getElementById("queen"+num).innerHTML = bees[count];
+		var queen = document.getElementById("queen"+i).innerHTML = bees[i-1];
+
 		//Shows Bee's Status 
-		document.getElementById("queen"+queen_status+"_status").innerHTML = "Alive";
-		num++;
-		count++;
-		queen_status++;
+		document.getElementById("queen"+ i +"_status").innerHTML = "Alive";
+	}
 
+	for (let i = 1; i < 6; i++) {
+
+		document.getElementById("worker"+ i).innerHTML = bees[i+2];
+		document.getElementById("worker"+ i+ "_status").innerHTML = "Alive";
+
+	}
+
+	for (let i = 1; i < 8; i++) {
+
+		document.getElementById("drone" + i).innerHTML = bees[i+7];
+		document.getElementById("drone"+ i +"_status").innerHTML = "Alive";
+	
 	}
 }
 
+//Random Generator 
+function random () {
+
+	var bees = getBees();
+	var buttonIndex = Math.floor(Math.random() * bees.length);
+
+	console.log("The array index is " +buttonIndex);
+
+	return buttonIndex;
 
 
-function workerBee () {
-	var count2 = 3;
-	var num2 = 1;
-	var worker_status = 1;
-	for (let i = 0; i < 5; i++) {
-
-		document.getElementById("worker"+num2).innerHTML = bees[count2];
-		document.getElementById("worker"+worker_status+"_status").innerHTML = "Alive";
-		num2++;
-		count2++;
-		worker_status++;
-
-	}
 }
-
-function droneBee () {
-	var count3 = 8;
-	var num3 = 1;
-	var drone_status = 1;
-	for (let i = 0; i < 7; i++) {
-
-		document.getElementById("drone"+num3).innerHTML = bees[count3];
-		document.getElementById("drone"+drone_status+"_status").innerHTML = "Alive";
-		num3++;
-		count3++;
-		drone_status++;
-
-	}
-}
-
-//Inform user which bee was hit and points lost 
-document.getElementById("beehit").innerHTML = "";
 
 
 //Function for button hit 
 function newHit() {
 
 
-	//Random Generator 
-	var buttonIndex = Math.floor(Math.random() * bees.length);
-	//document.getElementById("result").innerHTML = "Array index being shown is " + buttonIndex;
-
+	//Call to random generator 
+	random();
 
 	//Bee function 
 	function btnIndex (index, pointsLost, idName, idIncrement) {
 
+
+
 		var counter = 0;
+		var buttonIndex = random();
+		var bees = getBees();
 
 		if (buttonIndex == index) {
 
@@ -99,65 +86,56 @@ function newHit() {
 
 			document.getElementById(idName+idIncrement+"_status").innerHTML = "Dead";
 			document.getElementById(idName+idIncrement).style.display = "none";
-
-			bees.splice(bees[index], "Not availible");
-			console.log(bees);
 		
 		}
 
-		if (bees[0] < 1 && bees[1] < 1 && bees[2] < 1) {
+		// if (bees[0] < 1 && bees[1] < 1 && bees[2] < 1) {
 
-			document.getElementById("main").style.display = "none";
-        	document.getElementById("beehit").innerHTML =  "Game over all queens are dead";
-        	document.getElementById("btnHit").disabled = true;
+		// 	document.getElementById("main").style.display = "none";
+  //       	document.getElementById("beehit").innerHTML =  "Game over all queens are dead";
+  //       	document.getElementById("btnHit").disabled = true;
 
-		}
+		// }
 	}
 
 
 
-	//Queen 1
-	btnIndex(0, 7, "queen", 1);
-	//Queen 2
-	btnIndex(1, 7, "queen", 2);
-	//Queen 3
-	btnIndex(2, 7, "queen", 3);
 
-	//Worker 1
-	btnIndex(3, 12, "worker", 1);
-	//Worker 2
-	btnIndex(4, 12, "worker", 2);
-	//Worker 3
-	btnIndex(5, 12, "worker", 3);
-	//Worker 4
-	btnIndex(6, 12, "worker", 4);
-	//Worker 5
-	btnIndex(7, 12, "worker", 5);
+	//Call to fuctions 
+	for (let i = 0; i < 15; i++) {
 
-	//Drone 1
-	btnIndex(8, 18, "drone", 1);
-	//Drone 2
-	btnIndex(9, 18, "drone", 2);
-	//Drone 3
-	btnIndex(10, 18, "drone", 3);
-	//Drone 4
-	btnIndex(11, 18, "drone", 4);
-	//Drone 5
-	btnIndex(12, 18, "drone", 5);
-	//Drone 2
-	btnIndex(13, 18, "drone", 6);
-		//Drone 2
-	btnIndex(14, 18, "drone", 7);
-}
+		if (i < 3) {
+			var points = 7;
+			btnIndex(i, points, "queen", i+1);
+
+		}
+
+		if (i > 2 && i < 8) {
+			var points2 = 12;
+			var num = 1;
+			btnIndex(i, points2, "worker", num);
+			num++;
+		}
+
+		if (i > 7 && i < 15) {
+				
+			var points3 = 18;
+			var num2 = 1; 
+			btnIndex(i, points3, "drone", num2);
+			num2++;
+
+		}
+
+	}
+	
+} 
 
 //Function to reset values
 function reset () {
 
-	 bees = [100, 100, 100, 75, 75, 75, 75, 75, 50, 50, 50, 50, 50, 50, 50];
-
-	array(bees);
 	document.getElementById("beehit").innerHTML = "";
 	document.getElementById("main").style.display = "block";
+	getBees();
 	queenBee();
 	workerBee();
 	droneBee();
@@ -165,7 +143,7 @@ function reset () {
 }
 
 //Array Function 
-function array (bees) {
+function getBees () {
 
 	var bees = [100, 100, 100, 75, 75, 75, 75, 75, 50, 50, 50, 50, 50, 50, 50];
 
